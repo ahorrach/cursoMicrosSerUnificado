@@ -57,8 +57,13 @@ public class ExpedienteController {
 
     @PostMapping
     @Operation(summary = "Crear expediente", description = "Crea un nuevo expediente en la base de datos.")
-    public ResponseEntity<ExpedienteDTO> createExpediente(@RequestBody CreateExpedienteRequest expediente) {
-        ExpedienteDTO createdExpediente = expedienteService.createExpediente(expediente);
+    public ResponseEntity<?> createExpediente(@RequestBody CreateExpedienteRequest expediente) {
+        ExpedienteDTO createdExpediente = null;
+        try {
+            createdExpediente = expedienteService.createExpediente(expediente);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(createdExpediente, HttpStatus.CREATED);
     }
 
